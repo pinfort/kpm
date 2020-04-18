@@ -1,5 +1,9 @@
 var dependency_filename: []char :: "researches.json"
 
 func main()
+	var json: \previous_research\satonayu\himejson\src\json@Json :: \previous_research\satonayu\himejson\src\json@makeJsonF(@dependency_filename)
 	
+	var dependencies: \src\read_dependencies@Dependencies :: #\src\read_dependencies@Dependencies
+	do json.at("dependencies").toJObj().forEach(\src\read_dependencies@readJson, dependencies)
+	do cui@print(dependencies.toStr())
 end func

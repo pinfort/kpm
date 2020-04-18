@@ -1,0 +1,38 @@
++class Dependency()
+	+var url: []char
+	+var tag: []char
+	
+	+*func toStr(): []char
+		ret me.url ~ ": " ~ me.tag ~ "\n"
+	end func
+end class
+
++class Dependencies()
+	*func ctor()
+		do me.dependencies :: #list<@Dependency>
+	end func
+	
+	+var dependencies: list<@Dependency>
+	
+	+*func toStr(): []char
+		var str: []char :: ""
+		
+		do me.dependencies.head()
+		while(!me.dependencies.term())
+			var dependency: @Dependency :: me.dependencies.get()
+			do str :: str ~ dependency.toStr()
+			do me.dependencies.next()
+		end while
+		
+		ret str
+	end func
+end class
+
++func readJson(key: []char, value: \previous_research\satonayu\himejson\src\json@Json, data: @Dependencies): bool
+	var dependency: @Dependency :: #@Dependency
+	do dependency.url :: key
+	do dependency.tag :: value.toStr()
+	do data.dependencies.tail()
+	do data.dependencies.add(dependency)
+	ret true
+end func

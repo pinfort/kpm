@@ -1,0 +1,5 @@
+{
+    "dependencies": {
+        "https://github.com/satonayu/HimeJson": "dev-master"
+    }
+}
