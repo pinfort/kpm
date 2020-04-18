@@ -1,2 +1,3 @@
-# kpm
-Kuin package manager
+# Kuin package manager
+
+This is package manager for Kuin language.

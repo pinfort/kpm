@@ -1,0 +1,5 @@
+var dependency_filename: []char :: "researches.json"
+
+func main()
+	
+end func
