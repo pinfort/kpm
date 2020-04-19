@@ -1,0 +1,9 @@
+; textはprefixで始まっている？
++func startsWith(text: []char, prefix: []char): bool
+	ret(text.findStr(prefix, -1) = 0)
+end func
+
+; textはsuffixで終わっている？
++func endsWith(text: []char, suffix: []char): bool
+	ret(text.findStrLast(suffix, -1) = (^text - ^suffix))
+end func

@@ -1,9 +1,29 @@
 +class Download()
+	var host: []char
+	
+	*func ctor()
+		do me.host :: "https://github.com"
+	end func
+	
 	+func download(url: []char, path: []char, filename: []char)
 		var request: \previous_research\pinfort\kureq\src\http@Request :: #\previous_research\pinfort\kureq\src\http@Request
 		var response: \previous_research\pinfort\kuurl\src\curl@Response :: request.getResponse(url)
 		var writer: file@Writer :: file@makeWriter(path ~ "/" ~ filename, false)
 		do writer.write(response.binary_body)
 		do writer.fin()
+	end func
+	
+	+func genDownloadGithubUrl(dependency: \src\read_dependencies@Dependency): []char
+		var url_type_package: \src\read_dependencies@UrlTypes :: %PACKAGE
+		if(dependency.url.getType() <> url_type_package)
+			do cui@print("ERROR: url types other than PACKAGE is not supported yet")
+			ret null
+		end if
+		var url: []char :: me.genUrl(dependency.url.toStr(), dependency.tag.getTagBody())
+		ret url
+	end func
+	
+	func genUrl(package_name: []char, tag: []char): []char
+		ret me.host ~ "/" ~ package_name ~ "/archive/" ~ tag ~ ".zip"
 	end func
 end class

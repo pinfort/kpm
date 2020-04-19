@@ -1,9 +1,9 @@
 +class Dependency()
-	+var url: []char
-	+var tag: []char
+	+var url: @Url
+	+var tag: @Tag
 	
 	+*func toStr(): []char
-		ret me.url ~ ": " ~ me.tag ~ "\n"
+		ret me.url.toStr() ~ ": " ~ me.tag.toStr() ~ "\n"
 	end func
 end class
 
@@ -28,11 +28,100 @@ end class
 	end func
 end class
 
++class Tag()
+	var tag: []char
+	var branch_prefix: []char
+	var commit_prefix: []char
+	
+	*func ctor()
+		do me.tag :: ""
+		do me.branch_prefix :: "dev-"
+		do me.commit_prefix :: "commit-"
+	end func
+	
+	+func setTag(tag: []char)
+		do me.tag :: tag
+	end func
+	
+	+func getTagBody(): []char
+		var tagType: @TagTypes
+		
+		switch(me.getType())
+		case %BRANCH
+			ret me.tag.sub(^me.branch_prefix, -1)
+		case %COMMIT
+			ret me.tag.sub(^me.commit_prefix, -1)
+		default
+			ret me.tag
+		end switch
+	end func
+	
+	+func getType(): @TagTypes
+		var tagType: @TagTypes
+		
+		if(\src\functions@startsWith(me.tag, me.branch_prefix))
+			do tagType :: %BRANCH
+		elif(\src\functions@startsWith(me.tag, me.commit_prefix))
+			do tagType :: %COMMIT
+		else
+			do tagType :: %TAG
+		end if
+		ret tagType
+	end func
+	
+	+*func toStr(): []char
+		ret me.tag
+	end func
+end class
+
++class Url()
+	var url: []char
+	
+	*func ctor()
+		do me.url :: ""
+	end func
+	
+	+func setUrl(url: []char)
+		do me.url :: url
+	end func
+	
+	+func getType(): @UrlTypes
+		var urlType: @UrlTypes
+		
+		if(^me.url.split("/") = 2)
+			do urlType :: %PACKAGE
+		else
+			do urlType :: %URL
+		end if
+		
+		ret urlType
+	end func
+	
+	+*func toStr(): []char
+		ret me.url
+	end func
+end class
+
 +func readJson(key: []char, value: \previous_research\satonayu\himejson\src\json@Json, data: @Dependencies): bool
 	var dependency: @Dependency :: #@Dependency
-	do dependency.url :: key
-	do dependency.tag :: value.toStr()
+	var url: @Url :: #@Url
+	do url.setUrl(key)
+	do dependency.url :: url
+	var tag: @Tag :: #@Tag
+	do tag.setTag(value.toStr())
+	do dependency.tag :: tag
 	do data.dependencies.tail()
 	do data.dependencies.add(dependency)
 	ret true
 end func
+
++enum TagTypes
+	TAG
+	BRANCH
+	COMMIT
+end enum
+
++enum UrlTypes
+	URL
+	PACKAGE
+end enum
