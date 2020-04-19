@@ -1,10 +1,10 @@
+
 var DEPENDENCY_FILENAME: []char :: "researches.json"
 var DEPENDENCY_STORE_DIRECTORY_NAME: []char :: "previous_research"
 
 func main()
 	var json: \previous_research\satonayu\himejson\src\json@Json :: \previous_research\satonayu\himejson\src\json@makeJsonF(@DEPENDENCY_FILENAME)
 	
-	var dependencies: \src\read_dependencies@Dependencies :: #\src\read_dependencies@Dependencies
-	do json.at("dependencies").toJObj().forEach(\src\read_dependencies@readJson, dependencies)
-	do cui@print(dependencies.toStr())
+	var download: \src\download@Download :: #\src\download@Download
+	do download.download("https://github.com/pinfort/kuin-type-bridge/archive/master.zip", "D:\\Users\\pinfo\\Documents", "daa.zip")
 end func

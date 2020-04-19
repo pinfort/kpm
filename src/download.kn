@@ -1,0 +1,9 @@
++class Download()
+	+func download(url: []char, path: []char, filename: []char)
+		var request: \previous_research\pinfort\kureq\src\http@Request :: #\previous_research\pinfort\kureq\src\http@Request
+		var response: \previous_research\pinfort\kuurl\src\curl@Response :: request.getResponse(url)
+		var writer: file@Writer :: file@makeWriter(path ~ "/" ~ filename, false)
+		do writer.write(response.binary_body)
+		do writer.fin()
+	end func
+end class
