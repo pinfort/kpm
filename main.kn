@@ -1,16 +1,8 @@
 
-var DEPENDENCY_FILENAME: []char :: "researches.json"
-var DEPENDENCY_STORE_DIRECTORY_NAME: []char :: "previous_research"
 
 func main()
-	var json: \previous_research\satonayu\himejson\src\json@Json :: \previous_research\satonayu\himejson\src\json@makeJsonF(@DEPENDENCY_FILENAME)
-	var dependencies: \src\dependencies@Dependencies :: #\src\dependencies@Dependencies
-	do json.at("dependencies").toJObj().forEach(\src\dependencies@readJson, dependencies)
+	var dependencies: \src\dependencies@Dependencies :: \src\dependencies@readJsonFile()
 	
 	var download: \src\download@Download :: #\src\download@Download
-	;do download.download("https://github.com/pinfort/kuin-type-bridge/archive/master.zip", "D:\\Users\\pinfo\\Documents", "daa.zip")
-	do dependencies.dependencies.head()
-	var dependency: \src\dependencies@Dependency :: dependencies.dependencies.get()
-	var download_url: []char :: download.genDownloadGithubUrl(dependency)
-	do download.download(download_url, "D:\\Users\\pinfo\\Documents", dependency.tag.getTagBody() ~ ".zip")
+	do download.downloadByDependencies(dependencies)
 end func

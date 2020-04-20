@@ -1,16 +1,53 @@
+var DEPENDENCY_STORE_DIRECTORY_NAME: []char :: "previous_research"
+
 +class Download()
 	var host: []char
 	
 	*func ctor()
 		do me.host :: "https://github.com"
+		
+	end func
+	
+	+func downloadByDependency(dependency: \src\dependencies@Dependency)
+		var download_url: []char :: me.genDownloadGithubUrl(dependency)
+		var tmp_path: []char :: @DEPENDENCY_STORE_DIRECTORY_NAME ~ "/.tmp/" ~ dependency.url.toStr()
+		var target_path: []char :: @DEPENDENCY_STORE_DIRECTORY_NAME ~ "/.tmp/" ~ dependency.url.toStr()
+		do file@makeDir(tmp_path)
+		var filename: []char :: dependency.tag.getTagBody() ~ ".zip"
+		do cui@print("hoge\n")
+		var request: \previous_research\pinfort\kureq\src\http@Request :: #\previous_research\pinfort\kureq\src\http@Request
+		var response: \previous_research\pinfort\kuurl\src\curl@Response :: request.getResponse(download_url)
+		var writer: file@Writer :: file@makeWriter(tmp_path ~ "/" ~ filename, false)
+		var binbody: []bit8 :: response.binary_body
+		do writer.write(binbody)
+		do writer.fin()
+		do cui@print("barrr\n")
+		;do me.download(download_url, tmp_path, filename)
+		do cui@print("foo\n")
+		var res: bool :: zip@unzip(tmp_path ~ "/", tmp_path ~ "/" ~ dependency.tag.getTagBody() ~ ".zip")
+		do cui@print("bar\n")
+		do cui@print(res.toStr())
+		var reponame: []char :: dependency.url.toStr().split("/")[1]
+		do cui@print("fooooo\n")
+		var res2: bool :: file@moveDir(target_path, tmp_path ~ reponame)
+		do cui@print(res2.toStr())
+	end func
+	
+	+func downloadByDependencies(dependencies: \src\dependencies@Dependencies)
+		do dependencies.dependencies.head()
+		var dependency: \src\dependencies@Dependency :: dependencies.dependencies.get()
+		do me.downloadByDependency(dependency)
 	end func
 	
 	+func download(url: []char, path: []char, filename: []char)
 		var request: \previous_research\pinfort\kureq\src\http@Request :: #\previous_research\pinfort\kureq\src\http@Request
 		var response: \previous_research\pinfort\kuurl\src\curl@Response :: request.getResponse(url)
 		var writer: file@Writer :: file@makeWriter(path ~ "/" ~ filename, false)
-		do writer.write(response.binary_body)
+		var binbody: []bit8 :: response.binary_body
+		do writer.write(binbody)
+		do cui@print("fooooo\n")
 		do writer.fin()
+		do cui@print("barrr\n")
 	end func
 	
 	+func genDownloadGithubUrl(dependency: \src\dependencies@Dependency): []char

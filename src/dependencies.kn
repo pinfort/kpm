@@ -1,3 +1,5 @@
+var DEPENDENCY_FILENAME: []char :: "researches.json"
+
 +class Dependency()
 	+var url: @Url
 	+var tag: @Tag
@@ -113,6 +115,13 @@ end class
 		ret me.url
 	end func
 end class
+
++func readJsonFile(): @Dependencies
+	var json: \previous_research\satonayu\himejson\src\json@Json :: \previous_research\satonayu\himejson\src\json@makeJsonF(@DEPENDENCY_FILENAME)
+	var dependencies: @Dependencies :: #@Dependencies
+	do json.at("dependencies").toJObj().forEach(@readJson, dependencies)
+	ret dependencies
+end func
 
 +func readJson(key: []char, value: \previous_research\satonayu\himejson\src\json@Json, data: @Dependencies): bool
 	var dependency: @Dependency :: #@Dependency
