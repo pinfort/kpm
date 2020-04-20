@@ -5,6 +5,14 @@
 	+*func toStr(): []char
 		ret me.url.toStr() ~ ": " ~ me.tag.toStr() ~ "\n"
 	end func
+	
+	+*func cmp(t: Dependency): int
+		if((me.url = t.url) & (me.tag = t.tag))
+			ret 0
+		else
+			ret - 1
+		end if
+	end func
 end class
 
 +class Dependencies()
@@ -25,6 +33,10 @@ end class
 		end while
 		
 		ret str
+	end func
+	
+	+func find(item: @Dependency): bool
+		ret me.dependencies.find(item)
 	end func
 end class
 

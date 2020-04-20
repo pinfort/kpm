@@ -13,17 +13,13 @@
 		do writer.fin()
 	end func
 	
-	+func genDownloadGithubUrl(dependency: \src\read_dependencies@Dependency): []char
-		var url_type_package: \src\read_dependencies@UrlTypes :: %PACKAGE
+	+func genDownloadGithubUrl(dependency: \src\dependencies@Dependency): []char
+		var url_type_package: \src\dependencies@UrlTypes :: %PACKAGE
 		if(dependency.url.getType() <> url_type_package)
 			do cui@print("ERROR: url types other than PACKAGE is not supported yet")
 			ret null
 		end if
-		var url: []char :: me.genUrl(dependency.url.toStr(), dependency.tag.getTagBody())
+		var url: []char :: me.host ~ "/" ~ dependency.url.toStr() ~ "/archive/" ~ dependency.tag.getTagBody() ~ ".zip"
 		ret url
-	end func
-	
-	func genUrl(package_name: []char, tag: []char): []char
-		ret me.host ~ "/" ~ package_name ~ "/archive/" ~ tag ~ ".zip"
 	end func
 end class
