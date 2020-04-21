@@ -22,7 +22,7 @@ This is package manager for Kuin language.
 >
 > $ git clone https://github.com/pinfort/kureq.git
 
-2. Add 関連ファイル
+2. Add 関連ファイル to main.knprop
 
 - previous_research/pinfort/kuurl/dlls/curl_kuin_bridge.dll
 - previous_research/pinfort/kuurl/dlls/libcurl-x64.dll
