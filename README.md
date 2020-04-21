@@ -12,3 +12,8 @@ This is package manager for Kuin language.
      $ mkdir pinfort
      $ git clone https://github.com/pinfort/kuurl.git
      $ git clone https://github.com/pinfort/kureq.git
+
+Add 関連ファイル
+
+- previous_research/pinfort/kuurl/dlls/curl_kuin_bridge.dll
+- previous_research/pinfort/kuurl/dlls/libcurl-x64.dll
