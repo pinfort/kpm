@@ -5,6 +5,7 @@ This is package manager for Kuin language.
 ## Quick start
 
 1. Install dependencies
+
      $ mkdir previous_research
      $ mkdir previous_research/satonayu
      $ cd previous_research/satonayu
@@ -13,6 +14,7 @@ This is package manager for Kuin language.
      $ mkdir pinfort
      $ git clone https://github.com/pinfort/kuurl.git
      $ git clone https://github.com/pinfort/kureq.git
+
 2. Add 関連ファイル
 
 - previous_research/pinfort/kuurl/dlls/curl_kuin_bridge.dll
