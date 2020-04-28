@@ -4,25 +4,16 @@ This is package manager for Kuin language.
 
 ## Quick start
 
-1. Install dependencies
+1. Clone this repo
+1. Download dependencies
 
-> $ mkdir previous_research
->
-> $ mkdir previous_research/satonayu
->
-> $ cd previous_research/satonayu
->
-> $ git clone https://github.com/satonayu/HimeJson.git
->
-> $ cd ../
->
-> $ mkdir pinfort
->
-> $ git clone https://github.com/pinfort/kuurl.git
->
-> $ git clone https://github.com/pinfort/kureq.git
+- Download & extract kpm to somewhere
+- Check there is "researches.json"
+- Execute kpm like below
 
-2. Add 関連ファイル to main.knprop
+> $ ./path/to/kpm.exe
+
+1. Add 関連ファイル to main.knprop
 
 - previous_research/pinfort/kuurl/dlls/curl_kuin_bridge.dll
 - previous_research/pinfort/kuurl/dlls/libcurl-x64.dll
