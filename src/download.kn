@@ -1,4 +1,5 @@
-var DEPENDENCY_STORE_DIRECTORY_NAME: []char :: "previous_research"
+const DEPENDENCY_STORE_DIRECTORY_NAME: []char :: "previous_research/"
+const DEPENDENCY_STORE_TMP_PATH: []char :: @DEPENDENCY_STORE_DIRECTORY_NAME ~ ".tmp/"
 
 +class Download()
 	var host: []char
@@ -10,10 +11,12 @@ var DEPENDENCY_STORE_DIRECTORY_NAME: []char :: "previous_research"
 	
 	+func downloadByDependency(dependency: \src\dependencies@Dependency)
 		var download_url: []char :: me.genDownloadGithubUrl(dependency)
-		var tmp_path: []char :: @DEPENDENCY_STORE_DIRECTORY_NAME ~ "/.tmp/" ~ dependency.url.toStr()
-		var target_directory: []char :: @DEPENDENCY_STORE_DIRECTORY_NAME ~ "/" ~ dependency.url.toStr().split("/")[0]
-		var target_path: []char :: @DEPENDENCY_STORE_DIRECTORY_NAME ~ "/" ~ dependency.url.toStr()
-		do file@makeDir(tmp_path)
+		var tmp_path: []char :: @DEPENDENCY_STORE_TMP_PATH ~ dependency.url.toStr()
+		var target_directory: []char :: @DEPENDENCY_STORE_DIRECTORY_NAME ~ dependency.url.toStr().split("/")[0]
+		var target_path: []char :: @DEPENDENCY_STORE_DIRECTORY_NAME ~ dependency.url.toStr()
+		if(!file@exist(tmp_path))
+			do file@makeDir(tmp_path)
+		end if
 		var filename: []char :: dependency.tag.getTagBody() ~ ".zip"
 		var request: \previous_research\pinfort\kureq\src\http@Request :: #\previous_research\pinfort\kureq\src\http@Request
 		var response: \previous_research\pinfort\kuurl\src\curl@Response :: request.getResponse(download_url)
@@ -24,17 +27,21 @@ var DEPENDENCY_STORE_DIRECTORY_NAME: []char :: "previous_research"
 		do me.download(download_url, tmp_path, filename)
 		var res: bool :: zip@unzip(tmp_path ~ "/", tmp_path ~ "/" ~ dependency.tag.getTagBody() ~ ".zip")
 		var reponame: []char :: dependency.url.toStr().split("/")[1]
-		do cui@print(target_directory ~ "\n")
-		do cui@print(tmp_path ~ "/" ~ reponame ~ "-" ~ dependency.tag.getTagBody() ~ "\n")
-		do file@makeDir(target_directory)
+		if(!file@exist(target_directory))
+			do file@makeDir(target_directory)
+		end if
 		var res2: bool :: file@moveDir(target_path, tmp_path ~ "/" ~ reponame ~ "-" ~ dependency.tag.getTagBody())
-		do cui@print(res2.toStr())
 	end func
 	
 	+func downloadByDependencies(dependencies: \src\dependencies@Dependencies)
 		do dependencies.dependencies.head()
-		var dependency: \src\dependencies@Dependency :: dependencies.dependencies.get()
-		do me.downloadByDependency(dependency)
+		
+		do dependencies.dependencies.head()
+		while(!dependencies.dependencies.term())
+			var dependency: \src\dependencies@Dependency :: dependencies.dependencies.get()
+			do me.downloadByDependency(dependency)
+			do dependencies.dependencies.next()
+		end while
 	end func
 	
 	+func download(url: []char, path: []char, filename: []char)
@@ -43,9 +50,7 @@ var DEPENDENCY_STORE_DIRECTORY_NAME: []char :: "previous_research"
 		var writer: file@Writer :: file@makeWriter(path ~ "/" ~ filename, false)
 		var binbody: []bit8 :: response.binary_body
 		do writer.write(binbody)
-		do cui@print("fooooo\n")
 		do writer.fin()
-		do cui@print("barrr\n")
 	end func
 	
 	+func genDownloadGithubUrl(dependency: \src\dependencies@Dependency): []char

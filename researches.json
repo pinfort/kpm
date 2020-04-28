@@ -1,5 +1,7 @@
 {
     "dependencies": {
-        "satonayu/HimeJson": "dev-master"
+        "satonayu/HimeJson": "dev-master",
+        "pinfort/kureq": "dev-master",
+        "pinfort/kuurl": "dev-master"
     }
 }
